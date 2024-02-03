@@ -1,0 +1,29 @@
+{
+  "name": "file-manager",
+  "version": "1.0.0",
+  "description": "cli file-manager",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AbdulxaqDev/file-manager.git"
+  },
+  "keywords": [
+    "nodejs",
+    "assignment",
+    "cli",
+    "file-manager"
+  ],
+  "author": "abdilxaqdev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AbdulxaqDev/file-manager/issues"
+  },
+  "homepage": "https://github.com/AbdulxaqDev/file-manager#readme"
+}
