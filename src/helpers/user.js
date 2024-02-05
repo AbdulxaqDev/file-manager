@@ -1,4 +1,5 @@
 import os from "node:os";
+
 import { __dirname } from "./dirname.js";
 
 const argUsername = process.argv.find((arg) => arg.startsWith("--username"));
