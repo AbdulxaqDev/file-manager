@@ -1,48 +1,42 @@
 import { createInterface } from "node:readline";
 
-import { dirTable } from "./utils/dirTable.js";
+import { up, cd } from "./helpers/dir.js";
 import user from "./helpers/user.js";
-import {
-  up,
-  cd,
-  getCurDir,
-  getSysRootDir,
-  getWorkingDir,
-} from "./helpers/dir.js";
+import cat from "./utils/cat.js";
 
-const cli = createInterface({
+export const cli = createInterface({
   input: process.stdin,
   output: process.stdout,
 });
 
 console.log(user.welcomeMsg);
-cli.setPrompt(`➜  ${getCurDir()} $ `);
-console.log(`You are currently in ${getSysRootDir()}`);
+console.log(`\nYou are currently in ${"###"}`);
+cli.setPrompt(`➜  $ `);
 cli.prompt(true);
 
-cli.on("line", async (line) => {
-  const command = line.split(/\s+/);
+cli.on("resume", () => {
+  cli.prompt();
+});
 
-  switch (command[0]) {
-    case "cd":
-      await cd(command[1]);
-      break;
-    case "up":
-      up();
-      break;
-    case "ls":
-      await dirTable(getSysRootDir());
-      break;
-    case ".exit":
-      cli.close();
-      break;
-    default:
-      console.log("");
+cli.on("line", async (input) => {
+  const line = input.split(/\s+/);
+  const cnd = line[0];
+
+  if (cnd == "up") {
+    up();
   }
 
-  console.log(`You are currently in ${getSysRootDir()}`);
-  cli.setPrompt(`➜  ${getCurDir()} $ `);
-  cli.prompt(true);
+  if (cnd == "cd") {
+    await cd(line[1]);
+  }
+
+  if (cnd == "cat") {
+    await cat(line[1]);
+    cli.pause();
+    cli.resume();
+  }
+
+  cli.prompt();
 });
 
 cli.on("close", () => {
