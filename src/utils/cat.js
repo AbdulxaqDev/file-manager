@@ -7,7 +7,10 @@ export default async function cat(dir) {
     const stream = createReadStream(dir);
 
     stream.on("data", (chunk) => {
+      process.stdout.write("\n");
+      process.stdout.write("\n");
       process.stdout.write(chunk);
+      process.stdout.write("\n");
     });
 
     stream.on("end", () => {
