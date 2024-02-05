@@ -63,7 +63,6 @@ cli.on("line", async (input) => {
     case "compress":
       await compress(line[1], line[2]);
       break;
-
     case "decompress":
       await decompress(line[1], line[2]);
       break;
