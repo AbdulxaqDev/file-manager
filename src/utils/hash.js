@@ -22,6 +22,6 @@ export const calculateHash = async (filePath) => {
   streamToHash.on("end", () => {
     const hashedStream = hash.digest("hex");
     console.log(hashedStream);
-    cli.prompt()
+    cli.prompt();
   });
 };

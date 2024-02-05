@@ -9,6 +9,4 @@ const welcomeMsg = `Welcome to the File Manager, ${username}!`;
 const byeMsg = `\nThank you for using File Manager, ${username}, goodbye!`;
 const rootDir = __dirname(import.meta.url, "..", "..");
 
-
-
 export default { welcomeMsg, byeMsg, rootDir };

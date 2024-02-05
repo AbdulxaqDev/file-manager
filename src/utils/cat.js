@@ -19,6 +19,3 @@ export default async function cat(dir) {
     });
   }
 }
-
-
-
