@@ -3,59 +3,57 @@ import { stat } from "node:fs/promises";
 
 import { __dirname } from "./dirname.js";
 
-let sysRootDir = __dirname(import.meta.url, "..", "..");
-let workingDir = ["/"];
-let curDir = workingDir[workingDir.length - 1];
+let systemRootDir = __dirname(import.meta.url, "..", "..");
+let fManagerRootDir = "/";
 
-function getCurDir() {
-  return curDir;
-}
-
-function getWorkingDir() {
-  return join(...workingDir);
-}
-
-function getSysRootDir() {
-  return sysRootDir;
-}
-
-function up() {
-  if (curDir === "/") return;
-  // Real root directory
-  let newSysRoot = sysRootDir.split("/").slice(0, -1);
-  sysRootDir = join(...newSysRoot);
-
-  // Real root directory
-  workingDir.pop();
-  curDir = workingDir[workingDir.length - 1];
-
-  return join(...workingDir);
-}
-
-async function cd(dir) {
-  // Check the path existence
-  if (!(await isExist(dir.split("/")))) {
-    console.log(`\nthe "${dir}" path does not exist!\n`);
-    return;
-  }
-
-  // Real root directory
-  sysRootDir = join(sysRootDir, dir);
-
-  // File manager directories
-  workingDir.push(...dir.split("/"));
-  curDir = workingDir[workingDir.length - 1];
-
-  return join(...workingDir);
-}
-
-async function isExist(dir) {
+export async function isExist(dir, flag) {
   try {
-    const stats = await stat(join(sysRootDir, ...dir));
-    if (stats.isDirectory() || stats.isFile()) return true;
-  } catch {
+    const stats = await stat(join(systemRootDir, ...dir.split("/")));
+    if (flag === "dir") {
+      if (stats.isDirectory()) {
+        return true;
+      }
+      if (stats.isFile()) {
+        throw new Error(` the "${dir}" is NOT directory!\n`);
+      }
+      throw new Error(` the "${dir}" PATH does not exist!\n`);
+    }
+    if (flag === "file") {
+      if (stats.isFile()) {
+        return true;
+      }
+      if (stats.isDirectory()) {
+        throw new Error(` the "${dir}" is NOT a file!\n`);
+      }
+      throw new Error(` the "${dir}" FILE does not exist!\n`);
+    }
+  } catch (error) {
+    // if (error.code !== "ENOENT")
+    console.error(error);
     return false;
   }
 }
 
-export { getCurDir, getWorkingDir, getSysRootDir, up, cd, isExist };
+export function up() {
+  if (fManagerRootDir === "/") return;
+  systemRootDir = join(...systemRootDir.split("/").slice(0, -1));
+  fManagerRootDir =
+    join(...fManagerRootDir.split("/").slice(0, -1)) === "."
+      ? "/"
+      : join(...fManagerRootDir.split("/").slice(0, -1));
+  console.log("system root: ", systemRootDir);
+  console.log("fm root: ", fManagerRootDir);
+}
+
+export async function cd(dir) {
+  if (await isExist(dir, "dir")) {
+    systemRootDir = join(systemRootDir, dir);
+    fManagerRootDir =
+      join(fManagerRootDir, dir) === "." ? "/" : join(fManagerRootDir, dir);
+    console.log("system root: ", systemRootDir);
+    console.log("fm root: ", fManagerRootDir);
+  }
+}
+
+export const getSystemRootDir = () => systemRootDir;
+export const getFManagerRootDir = () => fManagerRootDir;
