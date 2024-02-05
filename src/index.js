@@ -28,60 +28,54 @@ cli.on("line", async (input) => {
   const line = input.split(/\s+/);
   const cnd = line[0];
   //TODO: convert ot switch case and add defaul "Invalin input"
-  if (cnd == "ls") {
-    await dirTable(systemRootDir);
-  }
 
-  if (cnd == "up") {
-    up();
-  }
+  switch (cnd) {
+    case "ls":
+      await dirTable(systemRootDir);
+      break;
+    case "up":
+      up();
+      break;
+    case "cd":
+      await cd(line[1]);
+      break;
+    case "add":
+      await create(line[1]);
+      break;
+    case "rn":
+      await rename(line[1], line[2]);
+      break;
+    case "cp":
+      await readWrite(line[1], line[2]);
+      break;
+    case "rm":
+      await remove(line[1]);
+      break;
+    case "mv":
+      await move(line[1], line[2]);
+      break;
+    case "cat":
+      await cat(line[1]);
+      break;
+    case "os":
+      getOSInfo(line[1]);
+      break;
+    case "compress":
+      await compress(line[1], line[2]);
+      break;
 
-  if (cnd == "cd") {
-    await cd(line[1]);
-  }
-
-  if (cnd == "add") {
-    await create(line[1]);
-  }
-
-  if (cnd == "rn") {
-    await rename(line[1], line[2]);
-  }
-
-  if (cnd == "cp") {
-    await readWrite(line[1], line[2]);
-  }
-
-  if (cnd == "rm") {
-    await remove(line[1]);
-  }
-
-  if (cnd == "mv") {
-    await move(line[1], line[2]);
-  }
-
-  if (cnd == "cat") {
-    await cat(line[1]);
-  }
-
-  if (cnd == "os") {
-    getOSInfo(line[1]);
-  }
-
-  if (cnd == "compress") {
-    await compress(line[1], line[2]);
-  }
-
-  if (cnd == "decompress") {
-    await decompress(line[1], line[2]);
-  }
-
-  if (cnd == "mv") {
-    await move(line[1], line[2]);
-  }
-
-  if (cnd == "hash") {
-    await calculateHash(line[1]);
+    case "decompress":
+      await decompress(line[1], line[2]);
+      break;
+    case "hash":
+      await calculateHash(line[1]);
+      break;
+    case ".exit":
+      cli.close();
+      break;
+    default:
+      console.error("Invalid input");
+      break;
   }
 
   console.log(`\nYou are currently in ${systemRootDir}`);
