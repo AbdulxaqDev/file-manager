@@ -1,5 +1,5 @@
 # Scoring: File Manager
-## Basic Scope
+## Basic Scope | Score 330/330
 - General
     - [x] **+6** Application accepts username and prints proper message
     - [x] **+10** Application exits if user pressed `ctrl+c` or sent `.exit` command and proper message is printed
