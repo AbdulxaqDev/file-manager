@@ -2,16 +2,17 @@ import { join } from "node:path";
 import { stat } from "node:fs/promises";
 
 import { __dirname } from "./dirname.js";
+import { errorMessage } from "./constants.js";
 
 export let systemRootDir = __dirname(import.meta.url, "..", "..");
 export let fManagerRootDir = "/";
 
-export async function isExist(dir, flag) {
+export async function isExist(dir) {
   try {
-    const stats = await stat(join(systemRootDir, ...dir.split("/")));
+    await stat(join(systemRootDir, ...dir.split("/")));
     return true;
   } catch {
-    console.error("\nOperation failed");
+    console.error(errorMessage);
     return false;
   }
 }
