@@ -27,7 +27,6 @@ cli.on("resume", () => {
 cli.on("line", async (input) => {
   const line = input.split(/\s+/);
   const cnd = line[0];
-  //TODO: convert ot switch case and add defaul "Invalin input"
 
   switch (cnd) {
     case "ls":
